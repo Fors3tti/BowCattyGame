@@ -12,6 +12,7 @@ public class PlayerMoveControls : MonoBehaviour
     private Animator anim;
 
     private int direction = 1;
+    private bool doubleJump = true;
 
     public float rayLength;
     public LayerMask groundLayer;
@@ -54,6 +55,12 @@ public class PlayerMoveControls : MonoBehaviour
             if (grounded)
             {
                 rb.velocity = new Vector2(gatherInput.valueX * speed, jumpForce);
+                doubleJump = true;
+            }
+            else if (doubleJump)
+            {
+                rb.velocity = new Vector2(gatherInput.valueX * speed, jumpForce);
+                doubleJump = false;
             }
         }
         gatherInput.jumpInput = false;
@@ -66,6 +73,7 @@ public class PlayerMoveControls : MonoBehaviour
         if (leftCheckHit || rightCheckHit)
         {
             grounded = true;
+            doubleJump = false;
         }
         else
         {
